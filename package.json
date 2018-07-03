@@ -1,0 +1,23 @@
+{
+  "name": "zbx-javascript",
+  "version": "0.0.1",
+  "description": "My usual utility functions & class in Javascript",
+  "main": "functions.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Steve-VE/zbx-javascript.git"
+  },
+  "keywords": [
+    "js",
+    "javascript"
+  ],
+  "author": "Steve Van Essche",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Steve-VE/zbx-javascript/issues"
+  },
+  "homepage": "https://github.com/Steve-VE/zbx-javascript#readme"
+}
