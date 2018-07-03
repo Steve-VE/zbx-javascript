@@ -1,6 +1,6 @@
 {
   "name": "zbx-javascript",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "My usual utility functions & class in Javascript",
   "main": "functions.js",
   "scripts": {
