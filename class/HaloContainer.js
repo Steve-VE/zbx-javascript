@@ -1,18 +1,16 @@
 class HaloContainer{ // Class qui contient les halo lumineux et va mettre à jour le style de l'élément HTML
-    constructor(p_html, p_parameters = undefined){
+    constructor(p_html, nbreOfHalo = undefined, p_parameters = undefined){
         this.container = p_html;
         this.haloLights = [];
         this.direction = 0;
         this.haloColors = undefined;
         this.backgroundColors = undefined;
-        this.parameters = undefined;
-
-        if(p_parameters !== undefined){
-            this.parameters = p_parameters;
-        }
+        this.parameters = p_parameters;
 
         // On ajoute les halo lumineux au containers
-        const nbreOfHalo = random(8, 12);
+        if(nbreOfHalo === undefined){
+            nbreOfHalo = random(8, 12);
+        }
         
         while(this.haloLights.length < nbreOfHalo){
             this.createNewHalo();
@@ -28,14 +26,22 @@ class HaloContainer{ // Class qui contient les halo lumineux et va mettre à jou
     }
     render(){ // À appeller pour afficher le résultat en background de l'élément HTML
         let backgroundStyle = "";
-
+        
         for(let i = (this.haloLights.length - 1); i >= 0; i--){
+            // console.log(i);
             backgroundStyle += this.haloLights[i].gradient;
             backgroundStyle += ", ";
         }
         backgroundStyle += "linear-gradient(" + this.direction + "deg, rgb(0, 0, 0) 0%, rgb(0, 20, 50) 100%)";
 
-        this.container.style.backgroundImage = backgroundStyle;
+        if(this.container.length === undefined){
+            this.container.style.backgroundImage = backgroundStyle;
+        }
+        else if(this.container.length > 0){
+            for(let i = 0; i < this.container.length; i++){
+                this.container[i].style.backgroundImage = backgroundStyle;
+            }
+        }
     }
     defineColors( newColors ){
         if(this.haloColors === undefined || this.haloColors === null){
@@ -72,7 +78,7 @@ class HaloContainer{ // Class qui contient les halo lumineux et va mettre à jou
             this.haloLights.push( new HaloLight(this.parameters) );
         }
         else{
-            this.haloLights.push( new HaloContainer() );
+            this.haloLights.push( new HaloLight() );
         }
     }
 }
@@ -83,6 +89,7 @@ class HaloLight{ // Class qui représente un halo lumineux
         this.y = random(0, 100);
 
         this.size = random(1, 25);
+        this.unit = '%';
         this.speed = (25 - this.size) / 128;
 
         this.direction = Math.round(Math.random() * 35) + 10;
@@ -94,7 +101,7 @@ class HaloLight{ // Class qui représente un halo lumineux
         this.alpha = ((25 - (this.size)) / 50);
 
         if(parameters !== undefined && parameters !== null && typeof(parameters) === "object" ){
-            const parametersKey = ['x', 'y', 'size', 'speed', 'direction', 'red', 'green', 'blue', 'alpha'];
+            const parametersKey = ['x', 'y', 'size', 'unit', 'speed', 'direction', 'red', 'green', 'blue', 'alpha'];
             parametersKey.forEach((key)=>{
                 if(key in parameters){
                     this[key] = parameters[key];
@@ -120,9 +127,9 @@ class HaloLight{ // Class qui représente un halo lumineux
     get gradient(){ // Retourne le 'radial-gradient' (CSS)
         let strGradient = "radial-gradient(";
         strGradient += "circle at " + this.x + "% " + this.y + "%, ";
-        strGradient += this.color + " 0%, ";
-        strGradient += this.rgba(this.alpha / 2) + " " + (this.size / 2) + "%, ";
-        strGradient += this.rgba(0) + " " + this.size + "%";
+        strGradient += this.color + " 0, ";
+        strGradient += this.rgba(this.alpha / 2) + " " + (this.size / 2) + this.unit + ", ";
+        strGradient += this.rgba(0) + " " + this.size + this.unit;
         strGradient += ") ";
         return strGradient;
     }
